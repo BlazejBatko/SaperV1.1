@@ -10,8 +10,16 @@ import java.awt.*;
 public class GUI extends JFrame {
     int spacing = 3;
 
-   public int mx = -100;
-   public  int my = -100;
+    public int mx = -100;
+    public int my = -100;
+
+    Random rand = new Random();
+
+
+    int[][] mines = new int[16][9];
+    int[][] neighbours = new int[16][9];
+    boolean[][] revealed = new boolean[16][9];
+    boolean[][] flagged = new boolean[16][9];
 
     public GUI() {
         this.setTitle("Saper");
@@ -19,6 +27,18 @@ public class GUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.setResizable(false);
+
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (rand.nextInt(100) < 20) {
+                    mines[i][j] = 1;
+                } else {
+                    mines[i][j] = 0;
+                }
+                revealed[i][j] = false;
+            }
+        }
+
 
         Board board = new Board();
         this.setContentPane(board);
@@ -40,7 +60,11 @@ public class GUI extends JFrame {
             for (int i = 0; i < 16; i++) {
                 for (int j = 0; j < 9; j++) {
                     g.setColor(Color.gray);
-                    if (mx >= spacing + i * 80 && mx < spacing + i * 80+80 - 2 * spacing && my >= spacing+j*80+80+26 && my < spacing+j*80+26+80+80-2*spacing) {
+
+                    if (revealed[i][j] == true) {
+                      g.setColor(Color.YELLOW);
+                      }
+                    if (mx >= spacing + i * 80 && mx < spacing + i * 80 + 80 - 2 * spacing && my >= spacing + j * 80 + 80 + 26 && my < spacing + j * 80 + 26 + 80 + 80 - 2 * spacing) {
                         g.setColor(Color.red);
                     }
 
@@ -61,10 +85,10 @@ public class GUI extends JFrame {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            System.out.println("Myszka sie ruszyla");
+           // System.out.println("Myszka sie ruszyla");
             mx = e.getX();
             my = e.getY();
-            System.out.println("X: "+mx+" Y: "+my);
+          //  System.out.println("X: " + mx + " Y: " + my);
 
         }
     }
@@ -73,7 +97,17 @@ public class GUI extends JFrame {
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-            System.out.println("Myszka kliknela");
+            if (inBoxX() != -1 && inBoxY() != -1){
+                revealed[inBoxX()][inBoxY()] = true;
+            }
+            if (inBoxX() != -1 && inBoxY() != -1) {
+                System.out.println("Kursor znajduje się na polu: [ " + inBoxX() + ", " + inBoxY()+"]");
+
+            }
+            else {
+                System.out.println("Kursor nie jest na żadnym z pól");
+            }
+
 
         }
 
@@ -96,5 +130,33 @@ public class GUI extends JFrame {
         public void mouseExited(MouseEvent mouseEvent) {
 
         }
+    }
+
+    public int inBoxX() {
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 9; j++) {
+
+                if (mx >= spacing + i * 80 && mx < spacing + i * 80 + 80 - 2 * spacing && my >= spacing + j * 80 + 80 + 26 && my < spacing + j * 80 + 26 + 80 + 80 - 2 * spacing) {
+                    return (i);
+                }
+            }
+        }
+        return (-1);
+    }
+
+    public int inBoxY() {
+        for (int i = 0; i < 16; i++) {
+
+
+            for (int j = 0; j < 9; j++) {
+
+                if (mx >= spacing + i * 80 && mx < spacing + i * 80 + 80 - 2 * spacing && my >= spacing + j * 80 + 80 + 26 && my < spacing + j * 80 + 26 + 80 + 80 - 2 * spacing) {
+                    return (j);
+                }
+            }
+
+        }
+        return -1;
+
     }
 }
