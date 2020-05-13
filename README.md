@@ -1,2 +1,6 @@
 # SaperV1.1
-Rozpoczęty projekt nad wersją popularnej gry saper
+
+Unfinished project of minesweeper game
+
+# Current State
+!(http://g.recordit.co/9WswTIvRkS.gif)
