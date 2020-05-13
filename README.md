@@ -2,7 +2,7 @@
 
 Unfinished project of minesweeper game
 
-# TO-DO
+## TO-DO
 - add mines
 - add timer
 - add sad/happy emote like in orginal game
